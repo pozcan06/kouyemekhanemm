@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOÜ Yemekhanem - Kocaeli Üniversitesi Yemekhane Rehberi</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="description" content="KOÜ Yemekhanem - Kocaeli Üniversitesi günlük yemek menüsü, öğrenci yorumları ve yemek değerlendirme platformu.">
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="KOÜ Yemek">
+</head>
+<body>
+    <!-- Top Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>KOÜ <span>Yemekhanem</span></h1>
+                    <p>Kocaeli Üniversitesi Yemekhane Rehberi</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button id="pwa-install-btn" class="btn btn-outline" style="display: none;">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Uygulamayı İndir</span>
+                </button>
+                <div id="user-profile-area" class="user-profile-area">
+                    <button id="header-login-btn" class="btn btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
+                    </button>
+                </div>
+                <div class="theme-badge">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>KOÜ Kampüs</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <button class="nav-tab active" data-tab="tab-menu">
+                <i class="fa-solid fa-calendar-day"></i> Günlük Menü
+            </button>
+            <button class="nav-tab" data-tab="tab-stats">
+                <i class="fa-solid fa-chart-simple"></i> Aylık Analiz
+            </button>
+            <button class="nav-tab" data-tab="tab-add">
+                <i class="fa-solid fa-plus-circle"></i> Menü Ekle
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+        
+        <!-- SECTION 1: DAILY MENU -->
+        <section id="tab-menu" class="tab-content active-content">
+            <!-- Date Filter & Quick Info -->
+            <div class="menu-control-bar">
+                <div class="date-picker-wrapper">
+                    <button id="prev-date-btn" class="btn-icon"><i class="fa-solid fa-chevron-left"></i></button>
+                    <input type="date" id="menu-date-select" class="date-input">
+                    <button id="next-date-btn" class="btn-icon"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="quick-status">
+                    <span id="day-display-name">Bugün</span>
+                </div>
+            </div>
+
+            <!-- Food Cards Container -->
+            <div id="food-cards-grid" class="food-cards-grid">
+                <!-- Food cards will be dynamically rendered here via app.js -->
+            </div>
+
+            <!-- Empty Menu State -->
+            <div id="empty-menu-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3>Bugün için Menü Bulunamadı</h3>
+                <p>Bu tarihe ait yemek menüsü henüz girilmemiş. Menü eklemek ister misiniz?</p>
+                <button class="btn btn-primary trigger-add-tab">
+                    <i class="fa-solid fa-plus"></i> Menü Ekle
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MONTHLY STATISTICS -->
+        <section id="tab-stats" class="tab-content">
+            <div class="stats-header">
+                <div class="section-title">
+                    <h2><i class="fa-solid fa-chart-line text-primary"></i> Yemek Çıkma Sıklığı & Analizi</h2>
+                    <p>Hangi yemeğin ay boyunca ne sıklıkla çıktığını ve öğrenci puanlarını inceleyin.</p>
+                </div>
+                <div class="stats-filter">
+                    <label for="stats-month-select">Ay Seçin:</label>
+                    <select id="stats-month-select" class="select-input">
+                        <!-- Options will be generated dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Analytics Dashboard Grid -->
+            <div class="stats-grid">
+                <!-- Quick Stats Cards -->
+                <div class="stat-card summary-card">
+                    <div class="stat-card-icon bg-green-light"><i class="fa-solid fa-utensils"></i></div>
+                    <div class="stat-card-info">
+                        <span class="stat-value" id="stat-total-meals">0</span>
+                        <span class="stat-label">Toplam Sunulan Yemek Çeşidi</span>
+                    </div>
+                </div>
+
+                <div class="stat-card summary-card">
+                    <div class="stat-card-icon bg-yellow-light"><i class="fa-solid fa-star"></i></div>
+                    <div class="stat-card-info">
+                        <span class="stat-value" id="stat-avg-rating">0.0</span>
+                        <span class="stat-label">Genel Değerlendirme Ortalaması</span>
+                    </div>
+                </div>
+
+                <div class="stat-card summary-card">
+                    <div class="stat-card-icon bg-blue-light"><i class="fa-solid fa-comments"></i></div>
+                    <div class="stat-card-info">
+                        <span class="stat-value" id="stat-total-comments">0</span>
+                        <span class="stat-label">Toplam Yapılan Yorum</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frequency & Popularity Tables -->
+            <div class="stats-detail-layout">
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3><i class="fa-solid fa-list-ol text-primary"></i> Yemek Çıkma Sıklıkları</h3>
+                        <p>Seçilen ayda en çok servis edilen yemekler</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Yemek Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Çıkma Sayısı</th>
+                                    <th>Ortalama Puan</th>
+                                    <th>Sıklık Derecesi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="frequency-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3><i class="fa-solid fa-heart text-primary"></i> En Çok Beğenilenler</h3>
+                        <p>Öğrenciler tarafından en yüksek puanı alan lezzetler</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Yemek Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Ortalama Puan</th>
+                                    <th>Değerlendirme Sayısı</th>
+                                </tr>
+                            </thead>
+                            <tbody id="popularity-table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ADD MENU PANEL -->
+        <section id="tab-add" class="tab-content">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2><i class="fa-solid fa-calendar-plus text-primary"></i> Günlük Yemek Menüsü Ekle</h2>
+                    <p>Yemekhane menüsünü ve yemek fotoğraflarını yükleyin. Veriler anlık olarak kaydedilir.</p>
+                </div>
+                
+                <form id="add-menu-form" class="menu-form">
+                    <div class="form-group date-group">
+                        <label for="form-menu-date"><i class="fa-solid fa-calendar-check"></i> Menü Tarihi</label>
+                        <input type="date" id="form-menu-date" required class="form-control">
+                    </div>
+
+                    <div class="food-inputs-grid">
+                        <!-- Food 1: Çorba -->
+                        <div class="food-input-card">
+                            <div class="food-input-header">
+                                <span class="badge badge-soup">Çorba</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-soup-name">Yemek Adı</label>
+                                <input type="text" id="food-soup-name" placeholder="Örn: Süzme Mercimek Çorbası" required class="form-control">
+                            </div>
+                            <div class="form-group file-group">
+                                <label class="file-upload-label">
+                                    <i class="fa-solid fa-camera"></i> Fotoğraf Ekle
+                                    <input type="file" id="food-soup-file" accept="image/*" class="file-input">
+                                </label>
+                                <div class="file-preview" id="soup-preview">Henüz görsel yüklenmedi</div>
+                            </div>
+                        </div>
+
+                        <!-- Food 2: Ana Yemek -->
+                        <div class="food-input-card">
+                            <div class="food-input-header">
+                                <span class="badge badge-main">Ana Yemek</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-main-name">Yemek Adı</label>
+                                <input type="text" id="food-main-name" placeholder="Örn: İzmir Köfte" required class="form-control">
+                            </div>
+                            <div class="form-group file-group">
+                                <label class="file-upload-label">
+                                    <i class="fa-solid fa-camera"></i> Fotoğraf Ekle
+                                    <input type="file" id="food-main-file" accept="image/*" class="file-input">
+                                </label>
+                                <div class="file-preview" id="main-preview">Henüz görsel yüklenmedi</div>
+                            </div>
+                        </div>
+
+                        <!-- Food 3: Yardımcı Yemek -->
+                        <div class="food-input-card">
+                            <div class="food-input-header">
+                                <span class="badge badge-side">Yardımcı Yemek</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-side-name">Yemek Adı</label>
+                                <input type="text" id="food-side-name" placeholder="Örn: Pirinç Pilavı" required class="form-control">
+                            </div>
+                            <div class="form-group file-group">
+                                <label class="file-upload-label">
+                                    <i class="fa-solid fa-camera"></i> Fotoğraf Ekle
+                                    <input type="file" id="food-side-file" accept="image/*" class="file-input">
+                                </label>
+                                <div class="file-preview" id="side-preview">Henüz görsel yüklenmedi</div>
+                            </div>
+                        </div>
+
+                        <!-- Food 4: Tatlı / Meyve / Ek -->
+                        <div class="food-input-card">
+                            <div class="food-input-header">
+                                <span class="badge badge-extra">Tatlı / Meyve / Ek</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-extra-name">Yemek/Ek Adı</label>
+                                <input type="text" id="food-extra-name" placeholder="Örn: Mevsim Meyvesi veya Kemalpaşa" required class="form-control">
+                            </div>
+                            <div class="form-group file-group">
+                                <label class="file-upload-label">
+                                    <i class="fa-solid fa-camera"></i> Fotoğraf Ekle
+                                    <input type="file" id="food-extra-file" accept="image/*" class="file-input">
+                                </label>
+                                <div class="file-preview" id="extra-preview">Henüz görsel yüklenmedi</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-submit-actions">
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Menüyü Kaydet ve Yayınla
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- RATING & COMMENT MODAL -->
+    <div id="review-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <span id="modal-food-category" class="badge">Kategori</span>
+                    <h3 id="modal-food-name">Yemek Adı</h3>
+                </div>
+                <button class="close-btn" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="review-form">
+                <div class="modal-body">
+                    <!-- Star Rating Interactive Selector -->
+                    <div class="rating-selector-wrapper">
+                        <span class="rating-label">Puanınız:</span>
+                        <div class="star-rating-selector" id="modal-star-selector">
+                            <i class="fa-regular fa-star" data-rating="1"></i>
+                            <i class="fa-regular fa-star" data-rating="2"></i>
+                            <i class="fa-regular fa-star" data-rating="3"></i>
+                            <i class="fa-regular fa-star" data-rating="4"></i>
+                            <i class="fa-regular fa-star" data-rating="5"></i>
+                        </div>
+                        <span id="rating-explanation" class="rating-explanation">Puan seçin</span>
+                    </div>
+
+                    <!-- Comment input area -->
+                    <div class="form-group comment-group">
+                        <label for="review-comment">Düşünceleriniz (Maksimum 100 Karakter)</label>
+                        <div class="comment-input-wrapper">
+                            <textarea id="review-comment" maxlength="100" rows="3" placeholder="Yemek hakkındaki görüşlerinizi yazın..." required></textarea>
+                            <span id="char-counter" class="char-counter">0 / 100</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancel-review-btn">İptal</button>
+                    <button type="submit" class="btn btn-primary" id="submit-review-btn" disabled>
+                        <i class="fa-solid fa-paper-plane"></i> Gönder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <span class="badge badge-soup" style="background-color: var(--primary);"><i class="fa-solid fa-shield-halved"></i> Öğrenci Girişi</span>
+                    <h3 style="margin-top: 5px;">KOÜ Yemekhanem'e Katıl</h3>
+                </div>
+                <button class="close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <!-- Step 1: E-Mail Input -->
+            <form id="auth-email-form" class="auth-form-step">
+                <div class="modal-body">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Yorum yapabilmek ve puan verebilmek için Kocaeli Üniversitesi e-posta adresiniz ile giriş yapmalısınız.</p>
+                    <div class="form-group">
+                        <label for="auth-email"><i class="fa-solid fa-envelope"></i> Okul E-Posta Adresi</label>
+                        <input type="email" id="auth-email" placeholder="Örn: 210201045@ogr.kocaeli.edu.tr" required class="form-control">
+                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Sadece @ogr.kocaeli.edu.tr ve @kocaeli.edu.tr uzantılı e-postalar kabul edilir.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancel-auth-btn">İptal</button>
+                    <button type="submit" class="btn btn-primary" id="send-code-btn">
+                        <i class="fa-solid fa-paper-plane"></i> Onay Kodu Gönder
+                    </button>
+                </div>
+            </form>
+
+            <!-- Step 2: Verification Code Input -->
+            <form id="auth-code-form" class="auth-form-step" style="display: none;">
+                <div class="modal-body">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Lütfen e-postanıza gönderilen 6 haneli onay kodunu giriniz.</p>
+                    <div class="form-group">
+                        <label for="auth-code"><i class="fa-solid fa-key"></i> Onay Kodu</label>
+                        <input type="text" id="auth-code" maxlength="6" placeholder="000000" required class="form-control" style="text-align: center; font-size: 20px; letter-spacing: 4px; font-weight: 700;">
+                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px;" id="code-sent-label">Kod e-postanıza gönderildi.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="back-auth-btn"><i class="fa-solid fa-chevron-left"></i> Geri</button>
+                    <button type="submit" class="btn btn-primary" id="verify-code-btn">
+                        <i class="fa-solid fa-circle-check"></i> Doğrula ve Giriş Yap
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MOCK EMAIL SIMULATOR (DUMMY POSTA KUTUSU) -->
+    <div id="email-simulator-box" class="email-simulator-box" style="display: none;">
+        <div class="simulator-header">
+            <h4><i class="fa-solid fa-envelope-open-text"></i> KOÜ E-Posta Kutusu (Simülatör)</h4>
+            <button class="simulator-close-btn" id="close-simulator-btn"><i class="fa-solid fa-minus"></i></button>
+        </div>
+        <div class="simulator-body">
+            <div class="email-item">
+                <div class="email-item-header">
+                    <strong>Kimden:</strong> noreply@kocaeli.edu.tr
+                </div>
+                <div class="email-item-subject">
+                    <strong>Konu:</strong> KOÜ Yemekhanem Giriş Doğrulama Kodu
+                </div>
+                <div class="email-item-content">
+                    Merhaba,<br>
+                    KOÜ Yemekhanem uygulamasına giriş için doğrulama kodunuz:<br>
+                    <span class="email-verification-code" id="simulator-code-display">123456</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer Area -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 KOÜ Yemekhanem. Tüm Hakları Saklıdır.</p>
+            <p class="footer-sub">Kocaeli Üniversitesi öğrencilerinin yemek deneyimlerini paylaşma platformu.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK Compat versiyonları -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database-compat.js"></script>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
