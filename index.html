@@ -1,4 +1,3 @@
-/Users/pozcan/.gemini/antigravity/scratch/kouyemekhanem/index.html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -87,6 +86,10 @@
                 <div class="quick-status">
                     <span id="day-display-name">Bugün</span>
                 </div>
+                <button id="delete-menu-btn" class="btn btn-danger-outline" style="display:none;" title="Bu günün menüsünü sil">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Menüyü Sil</span>
+                </button>
             </div>
 
             <!-- Food Cards Container -->
@@ -411,6 +414,25 @@
                     KOÜ Yemekhanem uygulamasına giriş için doğrulama kodunuz:<br>
                     <span class="email-verification-code" id="simulator-code-display">123456</span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content confirm-modal-content">
+            <div class="confirm-modal-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="confirm-modal-title">Emin misiniz?</h3>
+            <p id="confirm-modal-text">Bu işlem geri alınamaz.</p>
+            <div class="confirm-modal-actions">
+                <button id="confirm-cancel-btn" class="btn btn-outline">
+                    <i class="fa-solid fa-xmark"></i> İptal
+                </button>
+                <button id="confirm-ok-btn" class="btn btn-danger">
+                    <i class="fa-solid fa-trash-can"></i> Sil
+                </button>
             </div>
         </div>
     </div>

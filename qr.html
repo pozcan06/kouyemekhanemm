@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>KOÜ Yemekhanem - QR Kod</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      background: #0a0f1e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+    h2 { color: #00e5ff; margin-bottom: 10px; }
+    p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
+    #qrcode {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 4px solid #1e7e34;
+    }
+    .url {
+      margin-top: 16px;
+      color: #00e5ff;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    .hint {
+      margin-top: 20px;
+      background: #1e7e34;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📱 KOÜ Yemekhanem QR Kod</h2>
+  <p>Gerçek, taranabilir QR kodunuz aşağıdadır.</p>
+  <div id="qrcode"></div>
+  <div class="url">pozcan06.github.io/kouyemekhanemm</div>
+  <div class="hint">💡 Sağ tıkla → "Görüntüyü kaydet" ile indirebilirsin</div>
+
+  <script>
+    new QRCode(document.getElementById("qrcode"), {
+      text: "https://pozcan06.github.io/kouyemekhanemm/",
+      width: 300,
+      height: 300,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
